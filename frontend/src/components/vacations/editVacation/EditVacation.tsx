@@ -5,6 +5,8 @@ import vacationsService from "../../../services/Vacations";
 import { Control, useForm, useWatch } from "react-hook-form";
 import Vacation from "../../../models/Vacation";
 import notify from "../../../services/Notify";
+import { authStore } from "../../../redux/AuthState";
+import { jwtDecode } from "jwt-decode";
 
 function EditVacation(): JSX.Element {
 
@@ -16,6 +18,23 @@ function EditVacation(): JSX.Element {
     const navigate = useNavigate();
 
     const [src, setSrc] = useState<string>('');
+    const [isManager, setIsManager] = useState<Boolean>(false);
+    useEffect(()=> {
+        const token = authStore.getState().token || "";
+        if(!token){
+            notify.error("You must be logged in to view this page.");
+            navigate("/login");
+            return;
+        }
+       const currentManager = jwtDecode<{user: {role: string}}>(token).user.role ==="MANAGER";
+       setIsManager(currentManager);
+
+        if(!currentManager) {
+            notify.error("You must be a manager to edit this vacations")
+            navigate(`/vacations`);
+        }
+        
+    },[])
 
     function ImageWatched({ control }: { control: Control<Vacation> }) {
         const imageSrc = useWatch({

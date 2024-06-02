@@ -9,8 +9,8 @@ import notify from "../../../services/Notify";
 import Spinner from "../../common/spinner/Spinner";
 import Stats from "../stats/Stats";
 import VacationsList from "../list/Vacations";
-import AddVacation from "../AddVacation/AddVacation";
 import { jwtDecode } from "jwt-decode";
+import { authStore } from "../../../redux/AuthState";
 
 function Vacations(): JSX.Element {
 
@@ -25,29 +25,14 @@ function Vacations(): JSX.Element {
         password: string,
         role: string
     }>();
-    const [isManager, setIsManager] = useState<Boolean>(false);
-    
-    useEffect(() => {
-        const decodedUser = jwtDecode<{
-            user: {
-                id: string,
-                firstName: string,
-                lastName: string,
-                email: string,
-                password: string,
-                role: string
-            }
-        }>(localStorage.getItem("token") || "")?.user;
-        setUser(decodedUser);
-        if (!decodedUser) {
-            navigate('/login');
-        } else if (decodedUser.role === "MANAGER") {
-            setIsManager(true);
-        } else {
-            setIsManager(false);
+    useEffect(()=> {
+        const token = authStore.getState().token || "";
+        if(!token){
+            notify.error("You must be logged in to view this page.");
+            navigate("/login");
         }
-    }, [])
-
+    },[])
+ 
     return (
 
         <div className="Vacations">

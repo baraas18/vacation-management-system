@@ -26,7 +26,7 @@ function Routing(): JSX.Element {
 
             <Route path="/vacations/details/:vacationId" element={<VacationDetails />} />
 
-           <Route path="/vacations/new" element={<AddVacation />} />
+           {isManager && <Route path="/vacations/new" element={<AddVacation />} />}
 
             <Route path="/vacations/edit/:vacationId" element={<EditVacation />} />
 

@@ -2,8 +2,13 @@ import { NavLink } from "react-router-dom";
 import Vacation from "../../../models/Vacation";
 import "./VacationCard.css";
 import formatPrice from "../../../utils/formatPrice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditVacation from "../editVacation/EditVacation";
+import { useNavigate } from "react-router-dom";
+import { authStore } from "../../../redux/AuthState";
+import { jwtDecode } from "jwt-decode";
+import notify from "../../../services/Notify";
+
 
 interface VacationCardProps {
     vacation: Vacation,
@@ -11,7 +16,17 @@ interface VacationCardProps {
 
 function VacationCard(props: VacationCardProps): JSX.Element {
     const [isManager, setIsManager] = useState<Boolean>(false);
-      
+    const navigate = useNavigate();
+    useEffect(()=> {
+        const token = authStore.getState().token || "";
+        if(token){
+        console.log(jwtDecode(token));
+        setIsManager(jwtDecode<{user: {role: string}}>(token).user.role ==="MANAGER");
+        } else {
+            notify.error("You must be logged in to view this page.");
+            navigate("/login");
+        }
+    },[])
     return (
         <div className="VacationCard">
             <div>
@@ -23,13 +38,9 @@ function VacationCard(props: VacationCardProps): JSX.Element {
                 <br /> 
             </div>
             <div>
-                {isManager 
-                &&
-                <NavLink to={`/vacations/edit/${props.vacation.id}`}>
-                    {/* <img src={props.vacation.imageUrl} /> */}
-                    {<button onClick={EditVacation}>edit vacation</button> }
-
-                </NavLink>}
+                {isManager &&
+                    <button onClick={()=>navigate(`/vacations/edit/${props.vacation.id}`)}>edit vacation</button> 
+                }
             </div>
         </div>
     );
