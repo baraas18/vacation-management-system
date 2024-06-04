@@ -16,6 +16,7 @@ class Vacation implements Model {
                     price,
                     imageName
             FROM    vacations
+            ORDER BY startDate
         `)
         return vacations;
     }

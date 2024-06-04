@@ -4,6 +4,9 @@ import Vacation from "../../../models/Vacation";
 import vacationsService from "../../../services/Vacations";
 import { useNavigate } from "react-router-dom";
 import notify from "../../../services/Notify";
+import { useEffect, useState } from "react";
+import { authStore } from "../../../redux/AuthState";
+import { jwtDecode } from "jwt-decode";
 
 function AddVacation(): JSX.Element {
 
@@ -11,15 +14,28 @@ function AddVacation(): JSX.Element {
 
     const navigate = useNavigate();
 
+    const [isManager, setIsManager] = useState<Boolean>(false);
+        useEffect(()=> {
+            const token = authStore.getState().token || "";
+            if(!token){
+                notify.error("You must be logged in to view this page.");
+                navigate("/login");
+                return;
+            }
+            if(isManager)
+                setIsManager(jwtDecode<{user: {role: string}}>(token).user.role ==="MANAGER");
+
+            },[])
+
 
     async function submitVacationData(vacation: Vacation) {
+
+            
         try {
             vacation.image = (vacation.image as unknown as FileList)[0];
             const addedVacation = await vacationsService.addVacation(vacation);
-            // alert(`added a new vacation with id ${addedVacation.id}`)
             notify.success(`added a new vacation with id ${addedVacation.id}`);
-            // navigate(`/vacations/details/${addedVacation.id}`);
-            // navigate('/vacations');
+            navigate('/vacations');
             setValue('destination', '')
             setValue('description', '')
             setValue('startDate', undefined)
@@ -27,7 +43,6 @@ function AddVacation(): JSX.Element {
 
 
         } catch (err) {
-            // alert(err);
             notify.error(err);
         }
     }

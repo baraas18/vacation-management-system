@@ -8,9 +8,11 @@ import VacationDetails from "../../vacations/vacationDetails/VacationDetails";
 import Vacations from "../../vacations/vacations/Vacations";
 import Page404 from "../page404/Page404";
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from "react";
+
+
+
 function Routing(): JSX.Element {
-    const [isManager, setIsManager] = useState<Boolean>(false);
+
 
     return (
         <Routes>
@@ -26,15 +28,12 @@ function Routing(): JSX.Element {
 
             <Route path="/vacations/details/:vacationId" element={<VacationDetails />} />
 
-           {isManager && <Route path="/vacations/new" element={<AddVacation />} />}
+            <Route path="/vacations/add" element={<AddVacation />} />
 
             <Route path="/vacations/edit/:vacationId" element={<EditVacation />} />
 
             <Route path="/vacations" element={<Vacations />} />
-
-
-
-
+            
             <Route path="/about" element={<About />} />
 
             <Route path="*" element={<Page404 />} />

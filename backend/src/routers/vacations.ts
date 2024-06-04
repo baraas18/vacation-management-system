@@ -5,7 +5,6 @@ import { addVacationValidator, patchVacationValidator, putVacationValidator } fr
 import enforceAdmin from "../middlewares/enforce-admin";
 import addImageToBody from "../middlewares/add-image-to-body";
 import uploadImage from "../middlewares/upload-image";
-import { v4 as uuidv4 } from 'uuid';
 
 const router = Router();
 // router.get('/', getAll) = router.use('GET','/',getAll)
