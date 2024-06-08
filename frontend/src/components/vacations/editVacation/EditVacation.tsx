@@ -16,7 +16,7 @@ function EditVacation(): JSX.Element {
     const { register, handleSubmit, setValue, control } = useForm<Vacation>();
 
     const navigate = useNavigate();
-
+    const [userId, setUserId] = useState<string>('');
     const [src, setSrc] = useState<string>('');
     const [isManager, setIsManager] = useState<Boolean>(false);
     useEffect(()=> {
@@ -26,13 +26,17 @@ function EditVacation(): JSX.Element {
             navigate("/login");
             return;
         }
-       const currentManager = jwtDecode<{user: {role: string}}>(token).user.role ==="MANAGER";
-       setIsManager(currentManager);
+        const decodedToken = jwtDecode<{user: {id: string, role: string}}>(token);
+
+        const currentManager = decodedToken.user.role === "MANAGER";
+        setIsManager(currentManager);
 
         if(!currentManager) {
             notify.error("You must be a manager to edit this vacations")
             navigate(`/vacations`);
         }
+
+        setUserId(decodedToken.user.id);
         
     },[])
 
@@ -53,7 +57,7 @@ function EditVacation(): JSX.Element {
 
 
     useEffect(() => {
-        vacationsService.getOne(vacationId)
+        vacationsService.getOne(userId, vacationId)
             .then(vacationFromServer => {
                 setValue('destination', vacationFromServer?.destination);
                 setValue('description', vacationFromServer?.description);

@@ -7,6 +7,8 @@ class Vacation {
     public imageUrl?: string;
     public image?: File;
     public price?: number;
+    public isFollower?: number;
+    public followersCount?: number;
 
 }
 

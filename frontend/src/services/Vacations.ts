@@ -6,14 +6,14 @@ import { VacationsAction, VacationsActionType, vacationsStore } from "../redux/V
 
 class Vacations {
 
-    public async getAll(): Promise<Vacation[]> {
+    public async getAllVacationsByUser(userId: string): Promise<Vacation[]> {
 
         // get the vacations from redux
         let vacations = vacationsStore.getState().vacations;
 
         if (vacations.length === 0) {
             // get the vacations from remote server
-            const response = await axios.get<Vacation[]>(appConfig.vacationsUrl);
+            const response = await axios.get<Vacation[]>(`${appConfig.vacationsUrl}/user/${userId}`);
 
             // const { data } = await axios.get<Vacation[]>(appConfig.vacationsUrl);
             // return data;
@@ -35,7 +35,7 @@ class Vacations {
         return vacations;
     }
 
-    public async getOne(id: string ): Promise<Vacation | undefined> {
+    public async getOne(userId: string, id: string): Promise<Vacation | undefined> {
 
         let vacations = vacationsStore.getState().vacations;
 
@@ -43,7 +43,7 @@ class Vacations {
 
         if (!vacation) {
 
-            await this.getAll();
+            await this.getAllVacationsByUser(userId);
 
             vacations = vacationsStore.getState().vacations;
 

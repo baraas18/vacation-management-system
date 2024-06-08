@@ -14,10 +14,21 @@ function convertVacationToImageUrl(vacation: vacationDTO) {
     return vacationWithImageUrl;
 }
 
-export const getAll = async (req: Request, res: Response, next: NextFunction) => {
+// export const getAll = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         // throw new Error('custom error')
+//         const vacations = await getModel().getAll();
+//         res.json(vacations.map(convertVacationToImageUrl));
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+
+export const getAllVacationsByUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // throw new Error('custom error')
-        const vacations = await getModel().getAll();
+        const vacations = await getModel().getAllVacationsByUser(req.params.id);
         res.json(vacations.map(convertVacationToImageUrl));
     } catch (err) {
         next(err);

@@ -6,21 +6,41 @@ import { v4 } from 'uuid';
 
 
 class Vacation implements Model {
-    public async getAll(): Promise<DTO[]> {
+    // public async getAll(): Promise<DTO[]> {
+    //     const vacations = await query(`
+    //         SELECT  id,
+    //                 destination,
+    //                 description,
+    //                 startDate,
+    //                 endDate,
+    //                 price,
+    //                 imageName
+    //         FROM    vacations
+    //         ORDER BY startDate
+    //     `)
+    //     return vacations;
+    // }
+
+    
+    public async getAllVacationsByUser(userId): Promise<DTO[]> {
         const vacations = await query(`
-            SELECT  id,
-                    destination,
-                    description,
-                    startDate,
-                    endDate,
-                    price,
-                    imageName
-            FROM    vacations
+        SELECT v.id,
+               v.destination,
+               v.description,
+               v.startDate,
+               v.endDate,
+               v.price,
+               v.imageName,
+               count(f.userId) as followersCount,
+               (select count(*) from followers where vacationId = v.id and userId = ?) as isFollower
+            FROM vacations AS v
+            LEFT JOIN followers AS f
+            ON f.vacationId = v.id
+            GROUP BY v.id
             ORDER BY startDate
-        `)
+        `, [userId])
         return vacations;
     }
-
     public async getOne(id: string): Promise<DTO> {
         const vacations = await query(`
         SELECT  id,

@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { getAll, getOne, add, update, patch, remove } from "../controllers/vacations/controller";
+import { getOne, add, update, patch, remove, getAllVacationsByUser } from "../controllers/vacations/controller";
 import validate from "../middlewares/input-validation";
 import { addVacationValidator, patchVacationValidator, putVacationValidator } from '../controllers/vacations/validator';
 import enforceAdmin from "../middlewares/enforce-admin";
@@ -8,7 +8,8 @@ import uploadImage from "../middlewares/upload-image";
 
 const router = Router();
 // router.get('/', getAll) = router.use('GET','/',getAll)
-router.get('/', getAll)
+// router.get('/', getAll)
+router.get('/user/:id([0-9a-fA-F-]+)', getAllVacationsByUser)
 router.get('/:id([0-9a-fA-F-]+)', getOne);
 router.post('/', addImageToBody, validate(addVacationValidator) ,uploadImage ,add)
 router.put('/:id([0-9a-fA-F-]+)', addImageToBody, validate(putVacationValidator), uploadImage ,update)

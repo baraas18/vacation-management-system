@@ -17,7 +17,7 @@ function VacationsList(): JSX.Element {
 
     const [vacations, setVacations] = useState<Vacation[]>([]);
     const [isManager, setIsManager] = useState<Boolean>(false);
-
+    const [userId, setUserId] = useState<string>('');
     useEffect(() => {
         const token = authStore.getState().token || "";
         if(!token){
@@ -25,23 +25,23 @@ function VacationsList(): JSX.Element {
             navigate("/login");
             return;
         }
-       const currentManager = jwtDecode<{user: {role: string}}>(token).user.role ==="MANAGER";
-       setIsManager(currentManager);
+        const decodedToken = jwtDecode<{user: {id: string, role: string}}>(token);
 
-        if(!currentManager) {
-            notify.error("You must be a manager to edit this vacations")
-            navigate(`/vacations`);
-        }
+        const currentManager = decodedToken.user.role ==="MANAGER";
+        setIsManager(currentManager);
+        
+        const currentUserId = decodedToken.user.id;
+        setUserId(currentUserId);
 
-        vacationsService.getAll()
+        vacationsService.getAllVacationsByUser(currentUserId)
         .then(vacationsFromServer => setVacations(vacationsFromServer))
         .catch(error => notify.error(error));
 
-    const unsubscribe = vacationsStore.subscribe(() => {
-        setVacations([...vacationsStore.getState().vacations])
-    })
+        const unsubscribe = vacationsStore.subscribe(() => {
+            setVacations([...vacationsStore.getState().vacations])
+        })
 
-    return unsubscribe;
+        return unsubscribe;
         
     }, []);
 
