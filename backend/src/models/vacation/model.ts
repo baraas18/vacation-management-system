@@ -7,4 +7,6 @@ export default interface Model {
     update(vacation: DTO): Promise<DTO>;
     delete(id: string): Promise<boolean>;
     getAllVacationsByUser(userId: string): Promise<DTO[]>;
+    addFollow(vacationId: string, userId: string): Promise<DTO>;
+    removeFollow(vacationId: string, userId: string): Promise<DTO>;
 }

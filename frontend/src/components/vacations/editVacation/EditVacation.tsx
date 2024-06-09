@@ -97,7 +97,7 @@ function EditVacation(): JSX.Element {
 
                 
                 <label>description:</label>
-                <input type="text" {...register('destination')} />
+                <input type="text" {...register('description')} />
 
                 <label>startDate:</label>
                 <input type="date" {...register('startDate')} />

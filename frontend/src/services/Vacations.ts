@@ -98,15 +98,36 @@ class Vacations {
 
     }
 
+    public async updateFollow(vacationId: string, userId: string, isFollower: number): Promise<void> {
+
+        let response;
+        if (isFollower === 1) {
+            response = await axios.delete(`${appConfig.vacationsUrl}/${vacationId}/${userId}`);
+        } else {
+            response = await axios.post(`${appConfig.vacationsUrl}/${vacationId}/${userId}`);
+        }
+
+        const updatedVacation = response.data;
+
+        // create an UpdateVacation action for redux
+        const action: VacationsAction = {
+            type: VacationsActionType.UpdateVacation,
+            payload: updatedVacation
+        }
+
+        // perform the action on redux
+        vacationsStore.dispatch(action);
+
+        return updatedVacation;
+
+    }
+
     public async editVacation(vacation: Vacation): Promise<Vacation> {
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         }
-
-
-        console.log(vacation);
 
         const response = await axios.put<Vacation>(appConfig.vacationsUrl + `/${vacation.id}`, vacation, config);
 

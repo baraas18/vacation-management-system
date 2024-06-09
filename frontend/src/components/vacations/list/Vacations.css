@@ -10,3 +10,10 @@
     width: 50px;
     vertical-align: middle;
 } */
+
+#operations {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

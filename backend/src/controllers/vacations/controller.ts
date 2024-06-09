@@ -90,3 +90,24 @@ export const remove = async (req: Request, res: Response, next: NextFunction) =>
         next(err)
     }
 }
+
+export const addFollow = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const vacation = await getModel().addFollow(req.params.vacationId, req.params.userId);
+        if (!vacation) return next();
+        res.json(convertVacationToImageUrl(vacation));
+    } catch (err) {
+        next(err);
+    }
+}
+
+
+export const removeFollow = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const vacation = await getModel().removeFollow(req.params.vacationId, req.params.userId);
+        if (!vacation) return next();
+        res.json(convertVacationToImageUrl(vacation));
+    } catch (err) {
+        next(err);
+    }
+}

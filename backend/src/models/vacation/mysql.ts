@@ -56,20 +56,40 @@ class Vacation implements Model {
         return vacations[0];
     }
 
+    public async getOneByUser(vacationId: string, userId: string): Promise<DTO> {
+        const vacations = await query(`
+        SELECT v.id,
+               v.destination,
+               v.description,
+               v.startDate,
+               v.endDate,
+               v.price,
+               v.imageName,
+               count(f.userId) as followersCount,
+               (select count(*) from followers where vacationId = v.id and userId = ?) as isFollower
+            FROM vacations AS v
+            LEFT JOIN followers AS f
+            ON f.vacationId = v.id
+            WHERE v.id = ?
+            GROUP BY v.id
+        `, [userId, vacationId]);
+        return vacations[0];
+    }
+
     public async add(vacation: DTO): Promise<DTO> {
         const { destination, description, startDate, endDate, price, imageName } = vacation;
-       const id = v4();
+        const id = v4();
         const result: OkPacketParams = await query(`
             INSERT INTO vacations(id, destination, description, startDate, endDate, price, imageName) 
             VALUES(?,?,?,?,?,?,?) 
         `, [id, destination, description, startDate, endDate, price, imageName]);
         console.log(result);
-        
+
         return this.getOne(id);
     }
 
     public async update(vacation: DTO): Promise<DTO> {
-        const { id, destination, description, startDate, endDate, imageName} = vacation;
+        const { id, destination, description, startDate, endDate, imageName } = vacation;
         await query(`
             UPDATE  vacations
             SET     destination = ?, 
@@ -79,7 +99,7 @@ class Vacation implements Model {
                     imageName = ?
 
             WHERE   id = ?
-        `, [destination, description, startDate, endDate, imageName, id ]);
+        `, [destination, description, startDate, endDate, imageName, id]);
         return this.getOne(id);
     }
 
@@ -88,7 +108,21 @@ class Vacation implements Model {
             DELETE FROM vacations
             WHERE       id = ?
         `, [id]);
-        return Boolean(result.affectedRows) ;
+        return Boolean(result.affectedRows);
+    }
+
+    public async addFollow(vacationId: string, userId: string): Promise<DTO> {
+        await query(
+            `INSERT INTO followers (userId, vacationId) VALUES (?, ?)`,
+            [userId, vacationId]);
+        return this.getOneByUser(vacationId, userId);
+    }
+
+    public async removeFollow(vacationId: string, userId: string): Promise<DTO> {
+        await query(
+            `DELETE FROM followers WHERE userId = ? AND vacationId = ? `,
+            [userId, vacationId]);
+        return this.getOneByUser(vacationId, userId);
     }
 
 }

@@ -51,8 +51,11 @@ function VacationsList(): JSX.Element {
             <span>
              { isManager && <button onClick={()=>navigate(`/vacations/add`)}>Click Here to Add A New Vacation....</button> }
             </span>
+            <br />
             {vacations.length === 0 && <Spinner />}
-            {vacations.map(p => <VacationCard key={p.id} vacation={p} />)}     
+            <div id="operations" className="row">
+                {vacations.map(p => <VacationCard key={p.id} vacation={p} />)}     
+            </div>
         </div>
     );
 }

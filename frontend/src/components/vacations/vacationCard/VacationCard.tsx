@@ -10,6 +10,7 @@ import { jwtDecode } from "jwt-decode";
 import notify from "../../../services/Notify";
 import { format } from 'date-fns';
 import vacationsService from "../../../services/Vacations";
+import Heart from "react-animated-heart";
 
 
 interface VacationCardProps {
@@ -18,6 +19,7 @@ interface VacationCardProps {
 
 function VacationCard(props: VacationCardProps): JSX.Element {
     const [isManager, setIsManager] = useState<Boolean>(false);
+    const [userId, setUserId] = useState<string>('');
     const navigate = useNavigate();
 
     let startedDate: string = '';
@@ -40,7 +42,6 @@ function VacationCard(props: VacationCardProps): JSX.Element {
     async function deleteThis(vacationId: string): Promise<void> {
         if (window.confirm('are you sure you want to delete this vacation?')) {
             try {
-                console.log(vacationId);
 
                 await vacationsService.deleteVacation(vacationId);
                 notify.success('this vacation has been deleted');
@@ -53,7 +54,10 @@ function VacationCard(props: VacationCardProps): JSX.Element {
     useEffect(() => {
         const token = authStore.getState().token || "";
         if (token) {
-            setIsManager(jwtDecode<{ user: { role: string } }>(token).user.role === "MANAGER");
+            const decodedToken = jwtDecode<{ user: { role: string, id: string } }>(token);
+            setIsManager(decodedToken.user.role === "MANAGER");
+
+            setUserId(decodedToken.user.id);
 
         } else {
             notify.error("You must be logged in to view this page.");
@@ -62,34 +66,39 @@ function VacationCard(props: VacationCardProps): JSX.Element {
     }, [])
     return (
         <div className="VacationCard">
-            <div>
-                destination: {props.vacation.destination}
-                <br />
-                price: {formatPrice(props.vacation.price)}
-                <br />
-                description: {props.vacation.description}
-                <br />
-                Start Date: {startedDate}
-                <br />
-                End Date: {endDate}
-                <br />
-            </div>
-            <div>
-                {isManager &&
-                    <button onClick={() => navigate(`/vacations/edit/${props.vacation.id}`)}>edit vacation</button>
-                }
-                {isManager &&
-                    <button onClick={() => {
-                        if (props.vacation.id)
-                            deleteThis(props.vacation.id)
-                        else notify.error('Vacation id not found')
-                    }}>
-                        delete vacation</button>}
 
-                <button onClick={() => {
+            <div className="card" style={{ width: '18rem', height: '30rem' }}>
+                <img className="card-img-top" src={props.vacation.imageUrl} />
+                <div className="card-body">
+                    <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between' }}>
+                        <h5 className="card-title">{props.vacation.destination}</h5>
+                        {isManager &&
+                            <>
+                                <button onClick={() => {
+                                    if (props.vacation.id)
+                                        deleteThis(props.vacation.id)
+                                    else notify.error('Vacation id not found')
+                                }}>
+                                    delete vacation</button>
+                                <button onClick={() => navigate(`/vacations/edit/${props.vacation.id}`)}>edit vacation</button>
+                            </>
+                        }
 
-                }}>
-                    {props.vacation.isFollower ? 'UNFOLLOW' : 'FOLLOW'}</button>
+                        {!isManager &&
+                            <div style={{ display: "flex", alignItems: 'center', width: '100px' }}>
+                                <Heart
+                                    isClick={props.vacation.isFollower ? props.vacation.isFollower === 1 : false}
+                                    onClick={() => vacationsService.updateFollow(props.vacation.id || '', userId, props.vacation.isFollower || 0)}
+                                />
+                                {props.vacation.followersCount}
+                            </div>
+                        }
+                    </div>
+                    <h5 className="card-title">{formatPrice(props.vacation.price)}</h5>
+                    <p className="card-text">{props.vacation.description}</p>
+                    <p className="card-text">{startedDate} - {endDate}</p>
+
+                </div>
             </div>
         </div>
     );
