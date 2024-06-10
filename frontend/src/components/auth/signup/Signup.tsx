@@ -16,7 +16,7 @@ function Signup(): JSX.Element {
             // service
             await auth.signup(signupModel);
             notify.success('you have been successfully signed up');
-            navigate('/home');
+            navigate('/vacations');
         } catch (err) {
             notify.error(err);
         }

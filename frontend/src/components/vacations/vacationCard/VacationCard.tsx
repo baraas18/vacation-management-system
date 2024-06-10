@@ -22,10 +22,10 @@ function VacationCard(props: VacationCardProps): JSX.Element {
     const [userId, setUserId] = useState<string>('');
     const navigate = useNavigate();
 
-    let startedDate: string = '';
+    let startDate: string = '';
 
     if (props.vacation.startDate) {
-        startedDate = format(props.vacation.startDate, 'dd/MM/yyyy');
+        startDate = format(props.vacation.startDate, 'dd/MM/yyyy');
     } else {
         notify.error('Start date cannot be empty');
     }
@@ -65,25 +65,16 @@ function VacationCard(props: VacationCardProps): JSX.Element {
         }
     }, [])
     return (
-        <div className="VacationCard">
+        <div>
 
-            <div className="card" style={{ width: '18rem', height: '30rem' }}>
-                <img className="card-img-top" src={props.vacation.imageUrl} />
+            <div className="card VacationCard" style={{
+                display: 'flex', alignItems: 'center',
+
+            }}>
+                <img className="card-img-top" src={props.vacation.imageUrl} style={{ width: '285px', height: '150px' }} />
                 <div className="card-body">
                     <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between' }}>
                         <h5 className="card-title">{props.vacation.destination}</h5>
-                        {isManager &&
-                            <>
-                                <button onClick={() => {
-                                    if (props.vacation.id)
-                                        deleteThis(props.vacation.id)
-                                    else notify.error('Vacation id not found')
-                                }}>
-                                    delete vacation</button>
-                                <button onClick={() => navigate(`/vacations/edit/${props.vacation.id}`)}>edit vacation</button>
-                            </>
-                        }
-
                         {!isManager &&
                             <div style={{ display: "flex", alignItems: 'center', width: '100px' }}>
                                 <Heart
@@ -94,11 +85,27 @@ function VacationCard(props: VacationCardProps): JSX.Element {
                             </div>
                         }
                     </div>
-                    <h5 className="card-title">{formatPrice(props.vacation.price)}</h5>
                     <p className="card-text">{props.vacation.description}</p>
-                    <p className="card-text">{startedDate} - {endDate}</p>
-
+                    <p className="card-text">{startDate} - {endDate}</p>
                 </div>
+                {isManager &&
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '10px' }}>
+                        <button type="button"
+                            className="btn btn-primary"
+                            onClick={() => navigate(`/vacations/edit/${props.vacation.id}`)}
+                            style={{ width: '70px', margin: '10px' }}>
+                            Edit</button>
+                        <button type="button" className="btn btn-danger" onClick={() => {
+                            if (props.vacation.id)
+                                deleteThis(props.vacation.id)
+                            else notify.error('Vacation id not found')
+                        }}
+                            style={{ width: '70px', margin: '10px' }}>
+                            Delete
+                        </button>
+                    </div>
+                }
+                <h5 className="card-title">{formatPrice(props.vacation.price)}</h5>
             </div>
         </div>
     );

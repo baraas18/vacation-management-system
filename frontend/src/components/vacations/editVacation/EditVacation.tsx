@@ -49,10 +49,12 @@ function EditVacation(): JSX.Element {
             const file = ((imageSrc as unknown as FileList)[0])
             if (file) {
                 const newSrc = window.URL.createObjectURL(file)
-                return <img src={newSrc} />
+                return <img src={newSrc} style={{ width: '285px', height: '150px' }}
+                />
             }
         }
-        return <img src={src} />
+        return <img src={src} style={{ width: '285px', height: '150px' }}
+/>
     }
 
 
@@ -61,9 +63,13 @@ function EditVacation(): JSX.Element {
             .then(vacationFromServer => {
                 setValue('destination', vacationFromServer?.destination);
                 setValue('description', vacationFromServer?.description);
-                setValue('startDate', vacationFromServer?.startDate);
-                setValue('endDate', vacationFromServer?.endDate);
-                setValue('price', vacationFromServer?.price); 
+
+                const startDate = new Date(vacationFromServer?.startDate as any).toISOString().split('T')[0];
+                const endDate = new Date(vacationFromServer?.endDate as any).toISOString().split('T')[0];
+
+                setValue('startDate', startDate as any);
+                setValue('endDate', endDate as any);
+                setValue('price', vacationFromServer?.price);
 
 
                 setSrc(vacationFromServer?.imageUrl || '')
@@ -76,10 +82,9 @@ function EditVacation(): JSX.Element {
         console.log(vacation);
         try {
             vacation.image = (vacation.image as unknown as FileList)[0];
-            console.log(vacation.image)
             vacation.id = vacationId;
-            const updatedVacation = await vacationsService.editVacation(vacation);
-            notify.success(`updated a vacation with id ${updatedVacation.id}`)
+            await vacationsService.editVacation(vacation, userId);
+            notify.success(`updated a vacation`)
             navigate(`/vacations`);
 
         } catch (err) {

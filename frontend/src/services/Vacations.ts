@@ -50,7 +50,7 @@ class Vacations {
             vacation = vacations.find(v => v.id === id)
 
             // // get a vacation from remote server
-            // const response = await axios.get<Vacation>(appConfig.vacationsUrl + `/${id}`);
+            // const response = await axios.get<Vacation>(appConfig.vacationsUrl + /${id});
 
             // // extract the data from the response
             // vacation = response.data;
@@ -60,26 +60,26 @@ class Vacations {
 
     }
 
-    public async addVacation(vacation: Vacation): Promise<Vacation> {
+    public async addVacation(vacation: Vacation, userId: string): Promise<Vacation> {
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         }
-        const response = await axios.post<Vacation>(appConfig.vacationsUrl, vacation, config);
+        const response = await axios.post<Vacation>(appConfig.vacationsUrl + `/${userId}`, vacation, config);
 
-        const addedVacation = response.data;
+        const vacations = response.data;
 
         // create an AddVacation action for redux
         const action: VacationsAction = {
-            type: VacationsActionType.AddVacation,
-            payload: addedVacation
+            type: VacationsActionType.SetVacations,
+            payload: vacations
         }
 
-        // perform the action on redux
+        // now all is left to do, is to send this action to redux
         vacationsStore.dispatch(action);
 
-        return addedVacation;
+        return vacations;
 
     }
 
@@ -122,27 +122,27 @@ class Vacations {
 
     }
 
-    public async editVacation(vacation: Vacation): Promise<Vacation> {
+    public async editVacation(vacation: Vacation, userId: string): Promise<Vacation> {
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         }
 
-        const response = await axios.put<Vacation>(appConfig.vacationsUrl + `/${vacation.id}`, vacation, config);
+        const response = await axios.put<Vacation>(appConfig.vacationsUrl + `/${vacation.id}/${userId}`, vacation, config);
 
-        const updatedVacation = response.data;
+        const vacations = response.data;
 
         // create an UpdateVacation action for redux
         const action: VacationsAction = {
-            type: VacationsActionType.UpdateVacation,
-            payload: updatedVacation
+            type: VacationsActionType.SetVacations,
+            payload: vacations
         }
 
-        // perform the action on redux
+        // now all is left to do, is to send this action to redux
         vacationsStore.dispatch(action);
 
-        return updatedVacation;
+        return vacations;
 
     }
 

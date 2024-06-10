@@ -13,28 +13,33 @@ function AddVacation(): JSX.Element {
     const { register, handleSubmit, setValue } = useForm<Vacation>();
 
     const navigate = useNavigate();
+    const [userId, setUserId] = useState<string>('');
 
     const [isManager, setIsManager] = useState<Boolean>(false);
-        useEffect(()=> {
-            const token = authStore.getState().token || "";
-            if(!token){
-                notify.error("You must be logged in to view this page.");
-                navigate("/login");
-                return;
-            }
-            if(isManager)
-                setIsManager(jwtDecode<{user: {role: string}}>(token).user.role ==="MANAGER");
 
-            },[])
+    useEffect(() => {
+        const token = authStore.getState().token || "";
+        if (!token) {
+            notify.error("You must be logged in to view this page.");
+            navigate("/login");
+            return;
+        }
 
+        const decodedToken = jwtDecode<{ user: { id: string, role: string } }>(token);
+
+        if (isManager)
+            setIsManager(decodedToken.user.role === "MANAGER");
+
+        setUserId(decodedToken.user.id);
+    }, [])
 
     async function submitVacationData(vacation: Vacation) {
 
             
         try {
             vacation.image = (vacation.image as unknown as FileList)[0];
-            const addedVacation = await vacationsService.addVacation(vacation);
-            notify.success(`added a new vacation with id ${addedVacation.id}`);
+            await vacationsService.addVacation(vacation, userId);
+            notify.success(`added a new vacation `);
             navigate('/vacations');
             setValue('destination', '')
             setValue('description', '')

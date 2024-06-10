@@ -17,7 +17,7 @@ function Login(): JSX.Element {
             // service
             await auth.login(loginModel);
             notify.success('you have been successfully logged in');
-            navigate('/home');
+            navigate('/vacations');
         } catch (err) {
             notify.error(err);
         }
@@ -27,7 +27,7 @@ function Login(): JSX.Element {
         const token = authStore.getState().token;
         if (token) {
             notify.error('You are already logged in, please don\'t login again')
-            navigate('/home');
+            navigate('/vacations');
         }
     })
 

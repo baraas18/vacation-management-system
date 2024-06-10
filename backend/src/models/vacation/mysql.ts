@@ -22,7 +22,7 @@ class Vacation implements Model {
     // }
 
     
-    public async getAllVacationsByUser(userId): Promise<DTO[]> {
+    public async getAllVacationsByUser(userId: string): Promise<DTO[]> {
         const vacations = await query(`
         SELECT v.id,
                v.destination,
@@ -76,31 +76,31 @@ class Vacation implements Model {
         return vacations[0];
     }
 
-    public async add(vacation: DTO): Promise<DTO> {
+    public async add(vacation: DTO , userId: string): Promise<DTO[]> {
         const { destination, description, startDate, endDate, price, imageName } = vacation;
         const id = v4();
         const result: OkPacketParams = await query(`
             INSERT INTO vacations(id, destination, description, startDate, endDate, price, imageName) 
             VALUES(?,?,?,?,?,?,?) 
         `, [id, destination, description, startDate, endDate, price, imageName]);
-        console.log(result);
 
-        return this.getOne(id);
+        return this.getAllVacationsByUser(userId);
     }
 
-    public async update(vacation: DTO): Promise<DTO> {
-        const { id, destination, description, startDate, endDate, imageName } = vacation;
+    public async update(vacation: DTO , userId: string): Promise<DTO[]> {
+        const { id, destination, description, startDate, endDate, price ,imageName } = vacation;
         await query(`
             UPDATE  vacations
             SET     destination = ?, 
                     description = ?,
                     startDate = ?,
                     endDate = ?,
+                    price = ?,
                     imageName = ?
 
             WHERE   id = ?
-        `, [destination, description, startDate, endDate, imageName, id]);
-        return this.getOne(id);
+        `, [destination, description, startDate, endDate, price, imageName, id]);
+        return this.getAllVacationsByUser(userId);
     }
 
     public async delete(id: string): Promise<boolean> {

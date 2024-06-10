@@ -47,9 +47,8 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 
 export const add = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log(req.body);
-        const vacation = await getModel().add(req.body);
-        res.status(StatusCodes.CREATED).json(convertVacationToImageUrl(vacation));
+        const vacations = await getModel().add(req.body, req.params.userId);
+        res.json(vacations.map(convertVacationToImageUrl));
     } catch (err) {
         next(err)
     }
@@ -58,14 +57,14 @@ export const add = async (req: Request, res: Response, next: NextFunction) => {
 export const update = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
-        console.log(req.body);
         const updatedVacation = { id, ...req.body }
-        const vacation = await getModel().update(updatedVacation);
-        res.json(convertVacationToImageUrl(vacation));
+        const vacations = await getModel().update(updatedVacation, req.params.userId);
+        console.log(vacations);
+
+        res.json(vacations.map(convertVacationToImageUrl));
     } catch (err) {
         next(err)
     }
-
 }
 
 export const patch = async (req: Request, res: Response, next: NextFunction) => {
@@ -74,8 +73,8 @@ export const patch = async (req: Request, res: Response, next: NextFunction) => 
         const id = req.params.id;
         const existingVacation = await getModel().getOne(id);
         const updatedVacation = { ...existingVacation, ...req.body };
-        const vacation = await getModel().update(updatedVacation);
-        res.json(convertVacationToImageUrl(vacation));
+        const vacations = await getModel().update(updatedVacation, req.params.userId);
+        res.json(vacations.map(convertVacationToImageUrl));
     } catch (err) {
         next(err)
     }
