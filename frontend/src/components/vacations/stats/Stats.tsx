@@ -8,7 +8,6 @@ function Stats(): JSX.Element {
 
     const [totalVacations, setTotalVacations] = useState<number>()
     const [totalPrice, setTotalPrice] = useState<number>()
-    const [totalStock, setTotalStock] = useState<number>()
 
     useEffect(() => {
         setTotalVacations(vacationsStore.getState().vacations.length);

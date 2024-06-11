@@ -13,6 +13,7 @@ import vacationsService from "../../../services/Vacations";
 import Heart from "react-animated-heart";
 
 
+
 interface VacationCardProps {
     vacation: Vacation,
 }

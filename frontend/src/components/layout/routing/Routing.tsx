@@ -7,6 +7,7 @@ import EditVacation from "../../vacations/editVacation/EditVacation";
 import Vacations from "../../vacations/vacations/Vacations";
 import Page404 from "../page404/Page404";
 import { Routes, Route, Navigate } from 'react-router-dom';
+import HistogramComponent from "../../vacations/HistogramComponent/HistogramComponent";
 
 
 
@@ -27,6 +28,8 @@ function Routing(): JSX.Element {
 
 
             <Route path="/vacations/add" element={<AddVacation />} />
+
+            <Route path="/vacations/graphs" element={<HistogramComponent />} />
 
             <Route path="/vacations/edit/:vacationId" element={<EditVacation />} />
 

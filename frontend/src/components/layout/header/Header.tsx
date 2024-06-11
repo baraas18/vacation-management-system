@@ -4,7 +4,7 @@ import './Header.css';
 function Header(): JSX.Element {
     return (
         <div className='Header'>
-            <h1>WELCOME TO OUR WEBSITE</h1>
+            <h1>Vacation website</h1>
 
             <AuthMenu />
         </div>
