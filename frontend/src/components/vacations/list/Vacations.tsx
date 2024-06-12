@@ -15,7 +15,7 @@ import PaginationComponent from "../PaginationVacations/PaginationVacations";
 
 function VacationsList(): JSX.Element {
     const navigate = useNavigate();
-    useTitle('Northwind vacations');
+    useTitle('Booking');
 
     const [vacations, setVacations] = useState<Vacation[]>([]);
     const [filteredVacations, setFilteredVacations] = useState<Vacation[]>([]);
@@ -88,8 +88,11 @@ function VacationsList(): JSX.Element {
 
         <div className="VacationsList">
             <span>
-                {isManager && <button onClick={() => navigate('/vacations/add')}>Click Here to Add A New Vacation....</button>}
-                {isManager && <button onClick={() => navigate('/vacations/graphs')}>Click Here to see graphs....</button>}
+                {isManager && <>
+                    <button type="button" className="btn btn-success" onClick={() => navigate('/vacations/add')} style={{margin: '10px'}}>+ Add Vacation</button>
+                    <button type="button" className="btn btn-info" onClick={() => navigate('/vacations/graphs')} style={{margin: '10px'}}>View Graphs</button>
+                    </>
+                }
                 {!isManager && <div className="form-check form-switch">
                     <input className="form-check-input" type="checkbox" onChange={(e) => setFollowFilter(e.target.checked)} />
                     <label className="form-check-label"  >followed by me</label>

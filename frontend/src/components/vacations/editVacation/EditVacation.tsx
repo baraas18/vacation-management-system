@@ -79,7 +79,7 @@ function EditVacation(): JSX.Element {
     }, [])
 
     async function submitVacationData(vacation: Vacation) {
-        console.log(vacation);
+
         try {
             vacation.image = (vacation.image as unknown as FileList)[0];
             vacation.id = vacationId;
@@ -97,17 +97,16 @@ function EditVacation(): JSX.Element {
             <h2>Edit Vacation</h2>
             <form onSubmit={handleSubmit(submitVacationData)}>
 
-                <label>destination:</label>
+                <label>Destination:</label>
                 <input type="text" {...register('destination')} />
 
-                
-                <label>description:</label>
+                <label>Description:</label>
                 <input type="text" {...register('description')} />
 
-                <label>startDate:</label>
+                <label>Start Date:</label>
                 <input type="date" {...register('startDate')} />
 
-                <label>endDate:</label>
+                <label>End Date:</label>
                 <input type="date" {...register('endDate')} />
 
                 <label>Price:</label>
@@ -117,7 +116,7 @@ function EditVacation(): JSX.Element {
                 <input type="file" accept="image/*" {...register('image')} />
 
                 <ImageWatched control={control} />
-                <button>update</button>
+                <button type="button" className="btn btn-warning" style={{marginTop: '10px'}}>Update</button>
 
             </form>
 

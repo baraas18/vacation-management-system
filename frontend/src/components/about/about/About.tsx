@@ -2,7 +2,7 @@ import useTitle from "../../../utils/useTitle";
 import "./About.css";
 
 function About(): JSX.Element {
-    useTitle('Welcome to Your Vacation Website');
+    useTitle('Booking');
 
     return (
         <div className="About">

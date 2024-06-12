@@ -14,7 +14,7 @@ import { authStore } from "../../../redux/AuthState";
 
 function Vacations(): JSX.Element {
 
-    useTitle('our Vacations');
+    useTitle('Booking');
 
     const navigate = useNavigate();
     const [user, setUser] = useState<{
@@ -38,7 +38,6 @@ function Vacations(): JSX.Element {
         <div className="Vacations">
             <div>
                 <br />
-                <Stats />
                 <br />
                 <VacationsList />
             </div>

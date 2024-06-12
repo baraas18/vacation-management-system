@@ -54,28 +54,28 @@ function AddVacation(): JSX.Element {
 
     return (
         <div className="AddVacation">
-            <h2>please add your new vacation</h2>
+            <h2>Add Vacation</h2>
             <form onSubmit={handleSubmit(submitVacationData)}>
 
-                <label>destination:</label>
+                <label>Destination:</label>
                 <input type="text" {...register('destination')} />
 
-                <label>description:</label>
+                <label>Description:</label>
                 <input type="text" step="0.01" {...register('description')} />
 
-                <label>price:</label>
+                <label>Price:</label>
                 <input type="number" step="0.01" {...register('price')} />
 
-                <label>startDate:</label>
+                <label>Start Date:</label>
                 <input type="Date" {...register('startDate')} />
 
-                <label>endDate:</label>
+                <label>End Date:</label>
                 <input type="Date" {...register('endDate')} />
 
                 <label>Image:</label>
                 <input type="file" accept="image/*" {...register('image')} />
 
-                <button>add</button>
+                <button type="button" className="btn btn-success">Add</button>
 
             </form>
         </div>

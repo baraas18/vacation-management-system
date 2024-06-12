@@ -58,34 +58,6 @@ function Home(): JSX.Element {
     // }, [])
 
     return (
-        <div className="Home">
-
-            {/* {randomNumber === 1 ? <img src={VacationsImageSource} /> : <img src={Vacations2ImageSource} />} */}
-            {/* <img src={randomNumber === 1 ? VacationsImageSource : Vacations2ImageSource} /> */}
-{/* 
-            {randomNumber === 1 && <img src={VacationsImageSource} />}
-            {randomNumber === 2 && <img src={Vacations2ImageSource} />}
-
-            <hr />
-            {desserts.map(dessert => <span key={dessert.id}>{dessert.name}: USD{dessert.price} | </span>)}
-            <hr />
-
-            <button onClick={displaySale}>Display Sale</button>
-            <hr />
-
-            <button onClick={displaySale2}>Display Sale2</button>
-            <p>sale2: bar {sale2Info}</p>
-
-            <hr />
-            <button onClick={displaySale3}>Display Sale3</button>
-            <p>sale2: bar {sale3Info}</p>
-
-            <hr />
-            <button onClick={displayTime}>Display Time</button>
-            <p>time now is: {time}</p> */}
-
-            <hr />
-
     <div>
           <section>
         <h2>Discover Your Perfect Getaway</h2>
@@ -109,7 +81,6 @@ function Home(): JSX.Element {
     </div>
 
 
-        </div>
     );
 }
 
