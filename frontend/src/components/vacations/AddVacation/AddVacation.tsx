@@ -17,6 +17,16 @@ function AddVacation(): JSX.Element {
 
     const [isManager, setIsManager] = useState<Boolean>(false);
 
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); 
+        const day = String(today.getDate()).padStart(2, '0'); 
+        return `${year}-${month}-${day}`;
+    }
+
+    const minDate = getTodayDate();
+
     useEffect(() => {
         const token = authStore.getState().token || "";
         if (!token) {
@@ -67,10 +77,10 @@ function AddVacation(): JSX.Element {
                 <input type="number" step="0.01" {...register('price')} />
 
                 <label>Start Date:</label>
-                <input type="Date" {...register('startDate')} />
+                <input type="Date" min={minDate} {...register('startDate')} />
 
                 <label>End Date:</label>
-                <input type="Date" {...register('endDate')} />
+                <input type="Date" min={minDate} {...register('endDate')} />
 
                 <label>Image:</label>
                 <input type="file" accept="image/*" {...register('image')} />
