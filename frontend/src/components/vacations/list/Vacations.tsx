@@ -10,7 +10,6 @@ import Spinner from "../../common/spinner/Spinner";
 import { vacationsStore } from "../../../redux/VacationsState";
 import { authStore } from "../../../redux/AuthState";
 import { jwtDecode } from "jwt-decode";
-import { Container, Row } from 'react-bootstrap';
 import PaginationComponent from "../PaginationVacations/PaginationVacations";
 
 function VacationsList(): JSX.Element {
@@ -93,48 +92,46 @@ function VacationsList(): JSX.Element {
                     <button type="button" className="btn btn-info" onClick={() => navigate('/vacations/graphs')} style={{margin: '10px'}}>View Graphs</button>
                     </>
                 }
-                {!isManager && <div className="form-check form-switch">
-                    <input className="form-check-input" type="checkbox" onChange={(e) => setFollowFilter(e.target.checked)} />
-                    <label className="form-check-label"  >followed by me</label>
-                </div>}
-                {!isManager && <div className="input-group">
-                    <div className="input-group-prepend">
-                        <input type="radio" value="noFilter" checked={dateFilter==="noFilter"} name="dateFilter" onChange={(e) => {
-                            console.log(e.target.checked)
-                            if (e.target.checked) {
-                                setDateFilter(e.target.value)
-                            }
-                        }} />
-                        <label>No Filter</label>
+                {!isManager && <>
+                    <div className="form-check form-switch">
+                        <input className="form-check-input" type="checkbox" onChange={(e) => setFollowFilter(e.target.checked)} />
+                        <label className="form-check-label"  >followed by me</label>
                     </div>
-                    <div className="input-group-prepend">
-                        <input type="radio" value="pending" name="dateFilter" checked={dateFilter==="pending"} onChange={(e) => {
-                            if (e.target.checked) {
-                                setDateFilter(e.target.value)
-                            }
-                        }} />
-                        <label>Pending</label>
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <input type="radio" value="noFilter" checked={dateFilter === "noFilter"} name="dateFilter" onChange={(e) => {
+                                if (e.target.checked) {
+                                    setDateFilter(e.target.value)
+                                }
+                            }} />
+                            <label>No Filter</label>
+                        </div>
+                        <div className="input-group-prepend">
+                            <input type="radio" value="pending" name="dateFilter" checked={dateFilter === "pending"} onChange={(e) => {
+                                if (e.target.checked) {
+                                    setDateFilter(e.target.value)
+                                }
+                            }} />
+                            <label>Pending</label>
+                        </div>
+                        <div className="input-group-prepend">
+                            <input type="radio" value="ongoing" name="dateFilter" checked={dateFilter === "ongoing"} onChange={(e) => {
+                                if (e.target.checked) {
+                                    setDateFilter(e.target.value)
+                                }
+                            }} />
+                            <label>Ongoing</label>
+                        </div>
                     </div>
-                    <div className="input-group-prepend">
-                        <input type="radio" value="ongoing" name="dateFilter" checked={dateFilter==="ongoing"} onChange={(e) => {
-                            if (e.target.checked) {
-                                setDateFilter(e.target.value)
-                            }
-                        }} />
-                        <label>Ongoing</label>
-                    </div>
-                </div>}
+                    </>
+                }
             </span>
             <br />
             {vacations.length === 0 && <Spinner />}
-            <Container>
-                <Row>
-                    <div id="operations" className="row">
-                        {currentItems.map((v: Vacation) => <VacationCard key={v.id} vacation={v} />)}
-                    </div>
-                </Row>
-                <PaginationComponent totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            </Container>
+            <div id="operations" className="row">
+                {currentItems.map((v: Vacation) => <VacationCard key={v.id} vacation={v} />)}
+            </div>
+            <PaginationComponent totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </div>
     );
 }

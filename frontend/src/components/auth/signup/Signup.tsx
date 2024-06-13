@@ -34,7 +34,7 @@ function Signup(): JSX.Element {
                 <input type="email" {...register('email')} />
                 <label>Password:</label>
                 <input type="password" {...register('password')} />
-                <button type="button" className="btn btn-success">Sign Up</button>
+                <button type="submit" className="btn btn-success">Sign Up</button>
                 </form>
         </div>
     );

@@ -116,7 +116,7 @@ function EditVacation(): JSX.Element {
                 <input type="file" accept="image/*" {...register('image')} />
 
                 <ImageWatched control={control} />
-                <button type="button" className="btn btn-warning" style={{marginTop: '10px'}}>Update</button>
+                <button type="submit" className="btn btn-warning" style={{marginTop: '10px'}}>Update</button>
 
             </form>
 

@@ -12,7 +12,12 @@ function About(): JSX.Element {
 
         <h2>Seamless Booking Experience</h2>
         <p>Booking your dream vacation has never been easier. Our user-friendly website allows you to browse through destinations, compare prices, and customize your itinerary with just a few clicks. With secure payment options and instant confirmation, you can relax knowing that your vacation plans are in good hands.</p>
-
+        <img src="lake-como-family-vacation.jpg" style={{
+                    width: '900px',
+                    height: '458px',
+        }}/>
+        <br />
+        <br />
         <h2>Expert Recommendations</h2>
         <p>Not sure where to start? Our team of experienced travel advisors is here to help. From personalized recommendations to insider tips on hidden gems and must-see attractions, we'll ensure that every aspect of your trip is tailored to your unique needs.</p>
 

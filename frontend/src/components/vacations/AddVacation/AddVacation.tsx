@@ -75,7 +75,7 @@ function AddVacation(): JSX.Element {
                 <label>Image:</label>
                 <input type="file" accept="image/*" {...register('image')} />
 
-                <button type="button" className="btn btn-success">Add</button>
+                <button type="submit" className="btn btn-success">Add</button>
 
             </form>
         </div>

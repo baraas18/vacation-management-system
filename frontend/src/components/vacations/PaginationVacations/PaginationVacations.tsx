@@ -17,7 +17,6 @@ function PaginationComponent(props: PaginationComponentProps): JSX.Element {
     }
 
     return (
-        <>
             <Pagination>
                 {pageNumbers.map((number) => (
                     <Pagination.Item key={number} active={number === props.currentPage} onClick={() => props.setCurrentPage(number)}>
@@ -25,7 +24,6 @@ function PaginationComponent(props: PaginationComponentProps): JSX.Element {
                     </Pagination.Item>
                 ))}
             </Pagination>
-        </>
     );
 };
 
