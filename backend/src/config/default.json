@@ -10,7 +10,7 @@
             "secret": "LinkinPark"
         },
         "images": {
-            "path": "C:/Users/Guest1/Desktop/vacations_images"
+            "path": "images"
         }
     },
     "mysql": {
