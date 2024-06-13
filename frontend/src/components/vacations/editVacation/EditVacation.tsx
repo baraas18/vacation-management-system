@@ -19,15 +19,6 @@ function EditVacation(): JSX.Element {
     const [userId, setUserId] = useState<string>('');
     const [src, setSrc] = useState<string>('');
     const [isManager, setIsManager] = useState<Boolean>(false);
-    const getTodayDate = () => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); 
-        const day = String(today.getDate()).padStart(2, '0'); 
-        return `${year}-${month}-${day}`;
-    }
-
-    const minDate = getTodayDate();
     useEffect(()=> {
         const token = authStore.getState().token || "";
         if(!token){
@@ -113,10 +104,10 @@ function EditVacation(): JSX.Element {
                 <input type="text" {...register('description')} />
 
                 <label>Start Date:</label>
-                <input type="date" min={minDate} {...register('startDate')} />
+                <input type="date" {...register('startDate')} />
 
                 <label>End Date:</label>
-                <input type="date" min={minDate} {...register('endDate')} />
+                <input type="date" {...register('endDate')} />
 
                 <label>Price:</label>
                 <input type="number" step="0.01" {...register('price')} />
