@@ -129,7 +129,12 @@ class Vacations {
             }
         }
 
-        const response = await axios.put<Vacation>(appConfig.vacationsUrl + `/${vacation.id}/${userId}`, vacation, config);
+        let response;
+        if (vacation.image) {
+            response = await axios.put<Vacation>(appConfig.vacationsUrl + `/${vacation.id}/${userId}`, vacation, config);
+        } else {
+            response = await axios.patch<Vacation>(appConfig.vacationsUrl + `/${vacation.id}/${userId}`, vacation, config);
+        }
 
         const vacations = response.data;
 
